@@ -1,0 +1,2 @@
+template
+https://github.com/davidgrzyb/tailwind-auth-template
