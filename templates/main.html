@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Main Page</title>
 </head>
 <body>
+    <p><a href="http://localhost:5000/post" class="underline font-semibold">Write your own diary!</a></p>
     <b><a href = '/logout'>click here to log out</a></b>
+    <!--<img src="{url_for('file',filename=user['profile_image_name'])}">-->
+    <!--<img src="file/1.jpeg" width="200">-->
+    {% for item1, item2 in output, path %}
+        {{item1['profile_image_name']}}<br>
+        {{item1}}<br>
+        <img src=item2[0] width="200">
+        <br>
+    {% endfor %}
 </body>
 </html>
