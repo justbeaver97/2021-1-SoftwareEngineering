@@ -32,10 +32,11 @@ def login():
     password = request.form['password']   
 
     #Find the data that matches the id and password
-    user = userDB.find_one(  
-      {'id': id },
-      {'password': password } 
+    user = userDB.find(  
+      {'id': id }
     )
+    for item in user:
+      userName = item['name']
 
     #if no matches found, show an alarm and go back to login page
     if user is None:
@@ -82,13 +83,11 @@ def signup():
 
 @app.route('/main')
 def main():
-  i = 0
   if 'id' in session:
     id = session['id']
   diary = mongo.db.users
   output = []
-  count = 0
-  path_arr = []
+
   for item in diary.find():
     output.append({
       'title': item['title'],
@@ -96,12 +95,8 @@ def main():
       'profile_image_name': item['profile_image_name'],
       'date': item['date']
     })
-    str = output[count]['profile_image_name']
-    path='file/'+str
-    path_arr.append(path)
-    count += 1
-  print(path_arr)
-  return render_template('main.html', output = output, path = path_arr)
+
+  return render_template('main.html', output = output, id = id)
 
 
 @app.route('/post', methods=['POST', 'GET'])
@@ -131,17 +126,18 @@ def post():
     # })
     return redirect(url_for('main'))
 
-# @app.route('/file/<filename>')
-# def file(filename):
-#   return mongo.send_file(filename)
+@app.route('/<filename>')
+def file(filename):
+  return mongo.send_file(filename)
 
-# @app.route('/profile/<title>')
-# def profile(title):
-#   user = mongo.db.users.find_one_or_404({'title' : title})
-#   return f'''
-#     <h1>{title}</h1>
-#     <img src="{url_for('file',filename=user['profile_image_name'])}">
-#   '''
+@app.route('/profile/<title>')
+def profile(title):
+  user = mongo.db.users.find_one_or_404({'title' : title})
+  return f'''
+    <h1>title: {title}</h1>
+    <p>description: {user['description']}<p>
+    <img src="{url_for('file',filename=user['profile_image_name'])}" width="200">
+  '''
 
 @app.route('/edit', methods=['POST', 'GET'])
 def edit():

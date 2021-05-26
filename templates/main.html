@@ -7,15 +7,21 @@
     <title>Main Page</title>
 </head>
 <body>
+    <p>{{id}}</p>
+    <p>{{id}}'s diary</p>
     <p><a href="http://localhost:5000/post" class="underline font-semibold">Write your own diary!</a></p>
-    <b><a href = '/logout'>click here to log out</a></b>
-    <!--<img src="{url_for('file',filename=user['profile_image_name'])}">-->
-    <!--<img src="file/1.jpeg" width="200">-->
-    {% for item1, item2 in output, path %}
-        {{item1['profile_image_name']}}<br>
-        {{item1}}<br>
-        <img src=item2[0] width="200">
-        <br>
+    <b><a href = '/logout'>click here to log out</a></b><br>
+
+    {% for item1 in output %}
+        <form action="http://localhost:5000/edit">
+            <p>{{item1}}</p>
+            <img src={{item1.profile_image_name}} width="200"><br>
+            <input type="submit" value="Edit My Diary"/>
+            <br>
+        </form>
     {% endfor %}
 </body>
 </html>
+
+
+

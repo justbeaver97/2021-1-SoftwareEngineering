@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posting Page</title>
+    <title>Editing Page</title>
     <meta name="author" content="David Grzyb">
     <meta name="description" content="">
 
@@ -23,12 +23,12 @@
         <div class="w-full md:w-1/2 flex flex-col">
 
             <div class="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-12">
-                <a href="#" class="bg-black text-white font-bold text-xl p-4" alt="Logo">POST</a>
+                <a href="#" class="bg-black text-white font-bold text-xl p-4" alt="Logo">Edit</a>
             </div>
 
             <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-                <p class="text-center text-3xl">What happened to you today?</p>
-                <form  action = "http://localhost:5000/edit" method = "POST" enctype = "multipart/form-data" class="flex flex-col pt-3 md:pt-8">
+                <p class="text-center text-3xl">Want to make any changes?</p>
+                <form  action = "http://localhost:5000/post" method = "POST" enctype = "multipart/form-data" class="flex flex-col pt-3 md:pt-8">
                     <div class="flex flex-col pt-4">
                         <label for="title" class="text-lg">Title</label>
                         <input type="title" name="title" placeholder="Title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
@@ -39,10 +39,12 @@
                         <input type="description" name="description" placeholder="Description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
 
-                    <input type="submit" value="Upload My Diary" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8" />
+                    <br><input type = "file" name = "file" />
+
+                    <input type="submit" value="Edit My Diary" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8" />
                 </form>
                 <div class="text-center pt-12 pb-12">
-                    <p>Don't want to write a diary? <a href="http://localhost:5000/main" class="underline font-semibold">Go back to Main Page.</a></p>
+                    <p>Don't want to edit your diary? <a href="http://localhost:5000/main" class="underline font-semibold">Go back to Main Page.</a></p>
                 </div>
             </div>
 
