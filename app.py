@@ -85,7 +85,7 @@ def signup():
 def main():
   if 'id' in session:
     id = session['id']
-  diary = mongo.db.users
+  diary = mongo.db.users 
   output = []
 
   for item in diary.find():
@@ -125,7 +125,7 @@ def post():
     #   'filename': f.filename
     # })
     return redirect(url_for('main'))
-
+ 
 @app.route('/<filename>')
 def file(filename):
   return mongo.send_file(filename)
@@ -144,14 +144,15 @@ def edit():
   if request.method == 'GET':
     return render_template('edit.html')
   elif request.method == 'POST':
-    title = request.form['title']
-    description = request.form['description']
+    return render_template('edit.html')
+    # title = request.form['title']
+    # description = request.form['description']
 
-    addDiary = diaryDB.insert({
-      'title': request.form['title'],
-      'description': request.form['description']
-    })
-    return redirect(url_for('main'))
+    # addDiary = diaryDB.insert({
+    #   'title': request.form['title'],
+    #   'description': request.form['description']
+    # })
+    # return redirect(url_for('main'))
 
 
 if __name__ == "__main__":
