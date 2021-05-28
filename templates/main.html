@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
-    <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
+    <script type="text/javascript">
+
+    </script>
 </head>
 <body>
     <p>{{id}}</p>
@@ -14,17 +16,18 @@
     <b><a href = '/logout'>click here to log out</a></b><br>
 
     {% for item1 in output %}
-        <form method="GET" action="http://localhost:5000/edit">
+        <form name="form">
             <p>{{item1.title}}</p>
             <p>{{item1.description}}</p>
             <p>{{item1.profile_image_name}}</p>
             <p>{{item1.date}}</p>
             <img src={{item1.profile_image_name}} width="200"><br>
 
-            <input type = "hidden" id = "title" name = "title" value = {{item1.title}}/>
-            <input type = "hidden" id = "description" name = "description" value = {{item1.description}}/>
-            <input type = "hidden" id = "profile_image_name" name = "profile_image_name" value = {{item1.profile_image_name}}/>
-            <input type = "submit" value = "Edit My Diary" onclick="handleSubmit()"/>
+            <input type = "hidden" id = "title" name = "title" value = {{item1.title}} />
+            <input type = "hidden" id = "description" name = "description" value = {{item1.description}} />
+            <input type = "hidden" id = "profile_image_name" name = "profile_image_name" value = {{item1.profile_image_name}} />
+            <input type="submit" value="update" formmethod="GET" onclick="javascript: form.action='/edit';"/>
+            <input type="submit" value="delete" formmethod="POST" onclick="javascript: form.action='/delete';"/>
             <br><br><br>
         </form>
     {% endfor %}

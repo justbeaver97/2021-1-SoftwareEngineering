@@ -6,7 +6,20 @@
     <title>Editing Page</title>
     <meta name="author" content="David Grzyb">
     <meta name="description" content="">
-    <script type="text/javascript" src="{{ url_for('static', filename = 'edit.js') }}"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', () => {
+            const params = (new URL(document.location)).searchParams
+        
+            const title = params.get('title');
+            const description = params.get('description');
+            const profile_image_name = params.get('profile_image_name');
+        
+            document.getElementById("result-title").innerHTML = title;
+            document.getElementById("result-description").innerHTML = description;
+            document.getElementById("result-profile_image_name").innerHTML = profile_image_name;
+            console.log(title)
+        })
+    </script>
 
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -18,9 +31,6 @@
     </style>
 </head>
 <body class="bg-white font-family-karla h-screen">
-    <!-- <p><span id="result-title"></span></p>
-    <p><span id="result-description"></span></p>
-    <p><span id="result-profile_image_name"></span></p> -->
     <div class="w-full flex flex-wrap">
 
         <div class="w-full md:w-1/2 flex flex-col">
@@ -35,11 +45,13 @@
                     <div class="flex flex-col pt-4">
                         <label for="title" class="text-lg">Title</label>
                         <input type="title" name="title" placeholder="Title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                        <!-- <p>Original Title: <span id="result-title"></span></p> -->
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="description" class="text-lg">Description</label>
                         <input type="description" name="description" placeholder="Description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                        <!-- <p>Original Description: <span id="result-description"></span></p> -->
                     </div>
 
                     <br><input type = "file" name = "file" />

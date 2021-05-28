@@ -80,23 +80,26 @@ def signup():
       print('the id already exists')
       return redirect(url_for('signup'))
 
-
-@app.route('/main')
+#need to show the diaries in newly added order
+@app.route('/main', methods=['GET'])
 def main():
-  if 'id' in session:
-    id = session['id']
-  diary = mongo.db.users 
-  output = []
+  if request.method == 'GET':
+    if 'id' in session:
+      id = session['id']
+    diary = mongo.db.users 
+    output = []
 
-  for item in diary.find():
-    output.append({
-      'title': item['title'],
-      'description': item['description'],
-      'profile_image_name': item['profile_image_name'],
-      'date': item['date']
-    })
+    for item in diary.find():
+      output.append({
+        'title': item['title'],
+        'description': item['description'],
+        'profile_image_name': item['profile_image_name'],
+        'date': item['date']
+      })
+      output.reverse()
 
-  return render_template('main.html', output = output, id = id)
+    return render_template('main.html', output = output, id = id)
+  
 
 
 @app.route('/post', methods=['POST', 'GET'])
@@ -144,15 +147,38 @@ def edit():
   if request.method == 'GET':
     return render_template('edit.html')
   elif request.method == 'POST':
-    return render_template('edit.html')
-    # title = request.form['title']
-    # description = request.form['description']
+    title = request.form['title']
+    description = request.form['description']
+    f = request.files['file']
 
-    # addDiary = diaryDB.insert({
+    if not os.path.exists("./data"):
+      os.makedirs('./data')
+    filename = secure_filename(f.filename)
+
+    mongo.save_file(f.filename, f)
+    mongo.db.users.update_one({
+      'title': request.form['title'],
+      'description': request.form['description'],
+      'profile_image_name': f.filename
+    })
+    # insert_one({
     #   'title': request.form['title'],
-    #   'description': request.form['description']
+    #   'description': request.form['description'],      
+    #   'profile_image_name': f.filename,
+    #   'date': datetime.datetime.now()
     # })
-    # return redirect(url_for('main'))
+    return redirect(url_for('main'))
+
+@app.route('/delete', methods=['POST'])
+def delete():
+  if request.method == 'POST':
+    title = request.form['title']
+    print(title)
+    delete_diary = mongo.db.users
+    delete_diary.delete_one({
+      'title':request.form['title']
+    })
+    return redirect(url_for('main'))
 
 
 if __name__ == "__main__":
