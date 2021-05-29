@@ -5,31 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
-    <script type="text/javascript">
-
-    </script>
+    <style>
+        #item {
+            width: 200px;
+            float: left;
+        }
+        #item2 {
+            width: 400px;
+            float: left;
+        }
+    </style>
 </head>
 <body>
-    <p>{{id}}</p>
-    <p>{{id}}'s diary</p>
-    <p><a href="http://localhost:5000/post" class="underline font-semibold">Write your own diary!</a></p>
-    <b><a href = '/logout'>click here to log out</a></b><br>
+    <div id="item">LogIn ID: {{id}}</div>
+    <div id="item">{{userName}}'s diary</div>
+    <div id="item"><a href="http://localhost:5000/post" class="underline font-semibold">Write your own diary!</a></div>
+    <div id="item"><a href = '/logout'>click here to log out</a></div>
+    <br><br><br>
 
     {% for item1 in output %}
-        <form name="form">
-            <p>{{item1.title}}</p>
-            <p>{{item1.description}}</p>
-            <p>{{item1.profile_image_name}}</p>
-            <p>{{item1.date}}</p>
-            <img src={{item1.profile_image_name}} width="200"><br>
+        <form name="form" style="border: 1px  black;">
+            <div id="item">Title: {{item1.title}}</div>
+            <div id="item2">Date: {{item1.date}}</div><br><br>
+            <img src={{item1.profile_image_name}} alt={{item1.description}} width="150" style="vertical-align:middle;" >
+                <span style="margin-top:20px;font-size:18px;" >{{item1.description}}</span>
+
+            
 
             <input type = "hidden" id = "title" name = "title" value = {{item1.title}} />
             <input type = "hidden" id = "description" name = "description" value = {{item1.description}} />
             <input type = "hidden" id = "profile_image_name" name = "profile_image_name" value = {{item1.profile_image_name}} />
-            <input type="submit" value="update" formmethod="GET" onclick="javascript: form.action='/edit';"/>
-            <input type="submit" value="delete" formmethod="POST" onclick="javascript: form.action='/delete';"/>
-            <br><br><br>
+            <input type="submit" value="Edit My Diary" formmethod="GET" onclick="javascript: form.action='/edit';"/>
+            <input type="submit" value="Delete My Diary" formmethod="POST" onclick="javascript: form.action='/delete';"/>
+            <br><br>
         </form>
+        <br>
     {% endfor %}
 </body>
 </html>

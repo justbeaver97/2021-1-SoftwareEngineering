@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
@@ -34,18 +34,18 @@ def login():
     #Find the data that matches the id and password
     user = userDB.find(  
       {'id': id }
-    )
+    ) 
+    
     for item in user:
       userName = item['name']
 
     #if no matches found, show an alarm and go back to login page
     if user is None:
-      print('login failed')
       return render_template('login.html')
     #if matches found, record the session so that the user can logout from the page later
     else:
       session['id'] = request.form['id']
-      return redirect(url_for('main'))
+      return redirect(url_for('main', userName=userName))
 
 
 @app.route('/logout')
@@ -80,25 +80,31 @@ def signup():
       print('the id already exists')
       return redirect(url_for('signup'))
 
+
 #need to show the diaries in newly added order
 @app.route('/main', methods=['GET'])
 def main():
-  if request.method == 'GET':
-    if 'id' in session:
-      id = session['id']
-    diary = mongo.db.users 
-    output = []
+  userName = request.args.get('userName')
+  if userName is None:
+    print('path error')
+    return abort(401)
+  else:
+    if request.method == 'GET':
+      if 'id' in session:
+        id = session['id']
+      diary = mongo.db.users 
+      output = []
 
-    for item in diary.find():
-      output.append({
-        'title': item['title'],
-        'description': item['description'],
-        'profile_image_name': item['profile_image_name'],
-        'date': item['date']
-      })
-      output.reverse()
+      for item in diary.find():
+        output.append({
+          'title': item['title'],
+          'description': item['description'],
+          'profile_image_name': item['profile_image_name'],
+          'date': item['date']
+        })
+        output.reverse()
 
-    return render_template('main.html', output = output, id = id)
+      return render_template('main.html', output=output, id=id, userName=userName)
   
 
 
