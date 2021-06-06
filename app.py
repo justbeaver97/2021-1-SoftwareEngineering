@@ -37,7 +37,7 @@ def login():
     ) 
     
     for item in user:
-      userName = item['name']
+      userName = item['name'] 
 
     #if no matches found, show an alarm and go back to login page
     if user is None:
@@ -45,7 +45,8 @@ def login():
     #if matches found, record the session so that the user can logout from the page later
     else:
       session['id'] = request.form['id']
-      return redirect(url_for('main', userName=userName))
+      # return redirect(url_for('main', userName=userName))
+      return redirect(url_for('main'))
 
 
 @app.route('/logout')
@@ -84,11 +85,11 @@ def signup():
 #need to show the diaries in newly added order
 @app.route('/main', methods=['GET'])
 def main():
-  userName = request.args.get('userName')
-  if userName is None:
-    print('path error')
-    return abort(401)
-  else:
+  # userName = request.args.get('userName')
+  # if userName is None:
+  #   print('path error')
+  #   return abort(401)
+  # else:
     if request.method == 'GET':
       if 'id' in session:
         id = session['id']
@@ -104,7 +105,8 @@ def main():
         })
         output.reverse()
 
-      return render_template('main.html', output=output, id=id, userName=userName)
+      # return render_template('main.html', output=output, id=id, userName=userName)
+      return render_template('main.html', output=output, id=id)
   
 
 
