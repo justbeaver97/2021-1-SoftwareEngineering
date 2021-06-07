@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, abort
+from flask import Flask, render_template, request, redirect, url_for, session
 from bson.objectid import ObjectId
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
