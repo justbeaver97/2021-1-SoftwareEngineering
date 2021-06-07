@@ -18,7 +18,7 @@
 </head>
 <body>
     <div id="item">LogIn ID: {{id}}</div>
-    <div id="item">{{id}}'s diary</div>
+    <div id="item">{{name}}'s diary</div>
     <div id="item"><a href="http://localhost:5000/post" class="underline font-semibold">Write your own diary!</a></div>
     <div id="item"><a href = '/logout'>click here to log out</a></div>
     <br><br><br>
@@ -31,10 +31,10 @@
                 <span style="margin-top:20px;font-size:18px;" >{{item1.description}}</span>
 
             
-
+            <input type = "hidden" id = "id" name = "id" value = {{item1.id}} />
             <input type = "hidden" id = "title" name = "title" value = {{item1.title}} />
-            <input type = "hidden" id = "description" name = "description" value = {{item1.description}} />
-            <input type = "hidden" id = "profile_image_name" name = "profile_image_name" value = {{item1.profile_image_name}} />
+            <!--<input type = "hidden" id = "description" name = "description" value = {{item1.description}} />
+            <input type = "hidden" id = "profile_image_name" name = "profile_image_name" value = {{item1.profile_image_name}} />-->
             <input type="submit" value="Edit My Diary" formmethod="GET" onclick="javascript: form.action='/edit';"/>
             <input type="submit" value="Delete My Diary" formmethod="POST" onclick="javascript: form.action='/delete';"/>
             <br><br>

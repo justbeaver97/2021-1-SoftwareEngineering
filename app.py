@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, abort
+from bson.objectid import ObjectId
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
@@ -25,6 +26,7 @@ def root():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+  print("login")
   if request.method == 'GET':
     return render_template('login.html')
   elif request.method == 'POST':
@@ -51,6 +53,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+  print("logout")
   # remove the username from the session if it is there
   session.pop('id', None)
   return redirect(url_for('login'))
@@ -58,6 +61,7 @@ def logout():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
+  print("signup")
   if request.method == 'GET':
     return render_template('signup.html')
   elif request.method == 'POST':
@@ -79,39 +83,45 @@ def signup():
       return redirect(url_for('login'))
     else:
       print('the id already exists')
-      return redirect(url_for('signup'))
+      return render_template('alert.html')
 
 
 #need to show the diaries in newly added order
 @app.route('/main', methods=['GET'])
 def main():
-  # userName = request.args.get('userName')
-  # if userName is None:
-  #   print('path error')
-  #   return abort(401)
-  # else:
-    if request.method == 'GET':
-      if 'id' in session:
-        id = session['id']
-      diary = mongo.db.users 
-      output = []
+  print("main")
+  if request.method == 'GET':
+    if 'id' in session:
+      id = session['id']
+    diary = mongo.db.users 
+    output = []
 
-      for item in diary.find():
-        output.append({
-          'title': item['title'],
-          'description': item['description'],
-          'profile_image_name': item['profile_image_name'],
-          'date': item['date']
-        })
-        output.reverse()
+    task = userDB.find_one({'id': id})
+    print(task)
 
-      # return render_template('main.html', output=output, id=id, userName=userName)
-      return render_template('main.html', output=output, id=id)
+    for item in diary.find():
+      output.append({
+        'id': item['_id'],
+        'title': item['title'],
+        'description': item['description'],
+        'profile_image_name': item['profile_image_name'],
+        'date': item['date']
+      })
+    output.reverse()
+    for item in output:
+      print(output)
+      print(item['date'])
+    # sorted_diary = sorted(output.items(), key=lambda x: x[3])
+    # for item in sorted_diary:
+    #   print(item)
+    # return render_template('main.html', output=output, id=id, userName=userName)
+    return render_template('main.html', output=output, id=id, name=task['name'])
   
 
 
 @app.route('/post', methods=['POST', 'GET'])
 def post():
+  print("post")
   if request.method == 'GET':
     return render_template('post.html')
   elif request.method == 'POST':
@@ -152,9 +162,15 @@ def profile(title):
 
 @app.route('/edit', methods=['POST', 'GET'])
 def edit():
+  print("edit")
   if request.method == 'GET':
-    return render_template('edit.html')
+    temp_id = request.args.get('id')
+    task = mongo.db.users.find_one({'_id': ObjectId(temp_id)})
+    # return render_template('edit.html',task = task)
+    return render_template('edit.html',id = task['_id'], title = task['title'], description = task['description'])
+
   elif request.method == 'POST':
+    id = request.form['id']
     title = request.form['title']
     description = request.form['description']
     f = request.files['file']
@@ -164,17 +180,13 @@ def edit():
     filename = secure_filename(f.filename)
 
     mongo.save_file(f.filename, f)
-    mongo.db.users.update_one({
-      'title': request.form['title'],
-      'description': request.form['description'],
-      'profile_image_name': f.filename
-    })
-    # insert_one({
-    #   'title': request.form['title'],
-    #   'description': request.form['description'],      
-    #   'profile_image_name': f.filename,
-    #   'date': datetime.datetime.now()
-    # })
+
+    mongo.db.users.update_one({'_id': ObjectId(id)}, {'$set': {
+        'title': request.form['title'],
+        'description': request.form['description'],
+        'profile_image_name': f.filename
+      }})
+
     return redirect(url_for('main'))
 
 @app.route('/delete', methods=['POST'])
@@ -185,7 +197,7 @@ def delete():
     delete_diary = mongo.db.users
     delete_diary.delete_one({
       'title':request.form['title']
-    })
+    }) 
     return redirect(url_for('main'))
 
 
