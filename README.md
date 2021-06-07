@@ -3,9 +3,15 @@
 
 Final term Project for Software Engineering 
 
-Developer: YeHyun Suh
+## Developer
+서예현    
+YeHyun Suh
 
-MVC Model
-M: MongoDB
-V: HTML, JavaScript
-C: Python Flask
+## MVC Model
+M: MongoDB    
+V: HTML, JavaScript    
+C: Python Flask    
+
+
+## Reference
+https://github.com/davidgrzyb/tailwind-auth-template
