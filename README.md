@@ -3,7 +3,7 @@
 
 Final term Project for Software Engineering 
 
-https://youtu.be/gYK7GPoamLA        
+[Youtube Video Explained in English](https://youtu.be/gYK7GPoamLA)
 
 ## Developer
 서예현    
