@@ -7,7 +7,7 @@ Final term Project for Software Engineering
 
 ## Developer
 서예현    
-YeHyun Suh
+Yehyun Suh
 
 ## MVC Model
 M: MongoDB    
