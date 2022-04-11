@@ -5,17 +5,23 @@ from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
 import os
 import datetime 
+import configparser
 
 app = Flask(__name__)
 app.secret_key = 'software_engineering'
 
-cluster = MongoClient(
-  "mongodb+srv://YeHyunSuh:Tjdmdgka55!@cluster0.qbm6b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+config = configparser.ConfigParser()
+config.read('/config.ini')
+token_config = config['MongoDB']
+UserID = token_config['UserID']
+PassWord = token_config['PassWord']
+
+cluster = MongoClient(f"mongodb+srv://{UserID}:{PassWord}@cluster0.qbm6b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 database = cluster["software_engineering"]
 diaryDB = database["diary"]
 userDB = database["user"]
 
-app.config['MONGO_URI']='mongodb+srv://YeHyunSuh:Tjdmdgka55!@cluster0.qbm6b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+app.config['MONGO_URI']=f'mongodb+srv://{UserID}:{PassWord}@cluster0.qbm6b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
 #Route
